@@ -172,12 +172,9 @@
 - name: create prometheus pvc
   become: true
   oc_pvc:
-    namespace: "
-To github.com:philbrookes/installation{{ openshift_prometheus_namespace }}"
-    name: "{{ op
-To github.com:philbrookes/installationenshift_prometheus_pvc_name }}"
-    access_modes
-To github.com:philbrookes/installation: "{{ openshift_prometheus_pvc_access_modes }}"
+    namespace: "{{ openshift_prometheus_namespace }}"
+    name: "{{ openshift_prometheus_pvc_name }}"
+    access_modes: "{{ openshift_prometheus_pvc_access_modes }}"
     volume_capacity: "{{ openshift_prometheus_pvc_size }}"
     selector: "{{ openshift_prometheus_pvc_pv_selector }}"
     storage_class_name: "{{ openshift_prometheus_sc_name }}"
