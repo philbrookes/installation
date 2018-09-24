@@ -1,5 +1,6 @@
 ---
 openshift_is_atomic: false
+openshift_image_tag: latest
 openshift:
   common:
     config_base: "/etc/origin/"
