@@ -8,7 +8,7 @@ groups:
         miqTarget: "ContainerNode"
         severity: "ERROR"
         url: "https://www.example.com/node_down_fixing_instructions"
-        message: "Node {{$labels.instance}} is down"
+        message: "Node {{ '{{' }}$labels.instance{{ '}}' }} is down"
     - alert: "Too Many Pods"
       expr: sum(kubelet_running_pod_count) > 15
       annotations:
@@ -25,4 +25,4 @@ groups:
         miqTarget: "ExtManagementSystem"
         severity: "ERROR"
         url: "https://www.example.com/too_many_pods_fixing_instructions"
-        message: "{{$labels.instance}}: CPU usage is above 4% (current value is: {{ $value }})"
+        message: "{{ '{{' }}$labels.instance{{ '}}' }}: CPU usage is above 4% (current value is: {{ '{{' }} $value {{ '}}' }})"
