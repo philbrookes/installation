@@ -1,5 +1,8 @@
 ---
 openshift_is_atomic: false
+openshift:
+  common:
+    config_base: "/etc/origin/"
 # defaults file for openshift_prometheus
 openshift_prometheus_state: present
 openshift_prometheus_node_exporter_install: true
