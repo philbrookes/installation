@@ -1,0 +1,4 @@
+- name: Configure openshift-prometheus
+  hosts: master
+  roles:
+  - role: openshift_prometheus
