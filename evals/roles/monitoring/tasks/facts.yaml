@@ -1,6 +1,10 @@
 ---
 # The kubernetes version impacts the prometheus scraping endpoint
 # so gathering it before constructing the configmap
+- name: set permissions on admin.kubeconfig
+  become: true
+  shell: chmod a+r /etc/origin/master/admin.kubeconfig
+  
 - name: get oc version
   oc_version:
   register: oc_version
