@@ -4,6 +4,7 @@ openshift_image_tag: latest
 openshift:
   common:
     config_base: "/etc/origin/"
+openshift_deployment_type: "origin"
 # defaults file for openshift_prometheus
 openshift_prometheus_state: present
 openshift_prometheus_node_exporter_install: true
