@@ -1,4 +1,5 @@
 - name: Configure openshift-prometheus
   hosts: master
+  become: true
   roles:
   - role: monitoring

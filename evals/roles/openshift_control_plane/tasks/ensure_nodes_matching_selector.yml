@@ -1,6 +1,5 @@
 ---
 - name: Retrieve list of schedulable nodes matching selector
-  become: true
   oc_obj:
     state: list
     kind: node

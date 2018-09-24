@@ -2,7 +2,6 @@
 # The kubernetes version impacts the prometheus scraping endpoint
 # so gathering it before constructing the configmap
 - name: get oc version
-  become: true
   oc_version:
   register: oc_version
 
