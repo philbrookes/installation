@@ -1,6 +1,7 @@
 ---
 
 - name: Create temp directory for doing work in on target
+  become: true
   command: mktemp -td openshift-prometheus-ansible-XXXXXX
   register: mktemp
   changed_when: False
@@ -9,6 +10,7 @@
     tempdir: "{{ mktemp.stdout }}"
 
 - name: Create templates subdirectory
+  become: true
   file:
     state: directory
     path: "{{ tempdir }}/{{ item }}"
@@ -18,15 +20,19 @@
     - templates
 
 - include_tasks: install_prometheus.yaml
+  become: true
   when: openshift_prometheus_state == 'present'
 
 - include_tasks: uninstall_prometheus.yaml
+  become: true
   when: openshift_prometheus_state == 'absent'
 
 - include_tasks: install_node_exporter.yaml
+  become: true
   when: openshift_prometheus_node_exporter_install | default(true) | bool
 
 - name: Delete temp directory
+  become: true
   file:
     name: "{{ tempdir }}"
     state: absent

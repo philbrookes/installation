@@ -12,6 +12,7 @@
 
 # namespace
 - name: Add prometheus project
+  become: true
   oc_project:
     state: present
     name: "{{ openshift_prometheus_namespace }}"
@@ -20,6 +21,7 @@
 
 # secrets
 - name: Set alert, alertmanager and prometheus secrets
+  become: true
   oc_secret:
     state: present
     name: "{{ item }}-proxy"
@@ -34,6 +36,7 @@
 
 # serviceaccount
 - name: create prometheus serviceaccount
+  become: true
   oc_serviceaccount:
     state: present
     name: "{{ openshift_prometheus_service_name }}"
@@ -42,6 +45,7 @@
 
 # serviceaccount reader
 - name: create openshift_prometheus_reader_serviceaccount_name serviceaccount
+  become: true
   oc_serviceaccount:
     state: present
     name: "{{ openshift_prometheus_reader_serviceaccount_name }}"
@@ -50,6 +54,7 @@
 
 # TODO remove this when annotations are supported by oc_serviceaccount
 - name: annotate serviceaccount
+  become: true
   command: >
     {{ openshift_client_binary }} --config={{ openshift.common.config_base }}/master/admin.kubeconfig annotate --overwrite -n {{ openshift_prometheus_namespace }}
     serviceaccount {{ openshift_prometheus_service_name }} {{ item }}
@@ -58,6 +63,7 @@
 
 # add required permissions to prometheus for scraping router metrics
 - name: Create router-metrics cluster role
+  become: true
   oc_clusterrole:
     state: present
     name: router-metrics
@@ -68,6 +74,7 @@
 
 # create clusterrolebinding for prometheus serviceaccount
 - name: Set clusterrole permissions for prometheus
+  become: true
   oc_adm_policy_user:
     state: present
     namespace: "{{ openshift_prometheus_namespace }}"
@@ -80,6 +87,7 @@
 
 # create view role for prometheus-reader serviceaccount
 - name: Set view permissions for prometheus reader
+  become: true
   oc_adm_policy_user:
     state: present
     namespace: "{{ openshift_prometheus_namespace }}"
@@ -89,6 +97,7 @@
 
 
 - name: create services for prometheus
+  become: true
   oc_service:
     name: "{{ openshift_prometheus_service_name }}"
     namespace: "{{ openshift_prometheus_namespace }}"
@@ -107,6 +116,7 @@
       app: prometheus
 
 - name: create services for alert buffer
+  become: true
   oc_service:
     name: "{{ openshift_prometheus_alerts_service_name }}"
     namespace: "{{ openshift_prometheus_namespace }}"
@@ -123,6 +133,7 @@
       app: prometheus
 
 - name: create services for alertmanager
+  become: true
   oc_service:
     name: "{{ openshift_prometheus_alertmanager_service_name }}"
     namespace: "{{ openshift_prometheus_namespace }}"
@@ -141,6 +152,7 @@
 # create prometheus and alerts routes
 # TODO: oc_route module should support insecureEdgeTerminationPolicy: Redirect
 - name: create prometheus and alerts routes
+  become: true
   oc_route:
     state: present
     name: "{{ item.name }}"
@@ -158,6 +170,7 @@
 
 # Storage
 - name: create prometheus pvc
+  become: true
   oc_pvc:
     namespace: "{{ openshift_prometheus_namespace }}"
     name: "{{ openshift_prometheus_pvc_name }}"
