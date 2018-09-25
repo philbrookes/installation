@@ -23,6 +23,11 @@
   become: true
   when: openshift_prometheus_state == 'present'
 
+- name: restart prometheus pod
+  become: true
+  shell: "oc delete pod prometheus-0 -n {{ openshift_prometheus_namespace }}"
+  when: openshift_prometheus_state == 'present'
+
 - include_tasks: uninstall_prometheus.yaml
   become: true
   when: openshift_prometheus_state == 'absent'
