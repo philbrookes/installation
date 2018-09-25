@@ -24,9 +24,9 @@ receivers:
      - url: http://localhost:9099/topics/alerts
    - name: mail
      email_configs:
-     - to: "pbrookes@redhat.com"
+     - to: "{{ prometheus_alerts_to }}"
    - name: all
      email_configs:
-     - to: "pbrookes@redhat.com"
+     - to: "{{ prometheus_alerts_to }}"
      webhook_configs:
      - url: http://localhost:9099/topics/alerts

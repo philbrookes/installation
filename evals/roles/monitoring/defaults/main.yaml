@@ -5,6 +5,10 @@ openshift:
   common:
     config_base: "/etc/origin/"
 openshift_deployment_type: "origin"
+prometheus_smtp_smarthost: "SET_ME"
+prometheus_smtp_from: "SET_ME"
+prometheus_smtp_auth_username: "SET_ME"
+prometheus_smtp_auth_password: "SET_ME"
 # defaults file for openshift_prometheus
 openshift_prometheus_state: present
 openshift_prometheus_node_exporter_install: true
