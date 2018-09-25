@@ -2,6 +2,12 @@ groups:
 - name: example-rules
   interval: 30s # defaults to global interval
   rules:
+    - alert: "Slow HTTP Response"
+      expr: http_request_duration_microseconds > 1000000
+      annotations:
+        severity: "WARNING"
+        url: "https://www.example.com/slow_api_response"
+        message: "Slow HTTP responses on node {{ '{{' }}$labels.instance{{ '}}' }} from app{{ '{{' }}$labels.app{{ '}}' }}"
     - alert: "Node Down"
       expr: up{job="kubernetes-nodes"} == 0
       annotations:
