@@ -16,7 +16,7 @@ groups:
         url: "https://www.example.com/node_down_fixing_instructions"
         message: "Node {{ '{{' }}$labels.instance{{ '}}' }} is down"
     - alert: "Too Many Pods"
-      expr: sum(kubelet_running_pod_count) > 15
+      expr: sum(kubelet_running_pod_count) > 150
       annotations:
         miqTarget: "ExtManagementSystem"  
         severity: "ERROR"
