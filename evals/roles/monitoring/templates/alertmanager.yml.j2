@@ -1,7 +1,10 @@
 
 global:
-  smtp_smarthost: 'localhost:25'
-  smtp_from: 'phil.brookes@gmail.com'
+  smtp_smarthost: "{{ prometheus_smtp_smarthost }}"
+  smtp_from: "{{ prometheus_smtp_from }}"
+  smtp_auth_username: "{{ prometheus_smtp_auth_username }}"
+  smtp_auth_password: "{{ prometheus_smtp_auth_password }}"
+
 
 # The root route on which each incoming alert enters.
 route:
