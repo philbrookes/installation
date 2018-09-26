@@ -1,4 +1,5 @@
 ---
+openshift_metrics_uninstall: true
 openshift_is_atomic: false
 openshift_image_tag: latest
 openshift:

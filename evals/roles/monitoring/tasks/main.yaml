@@ -21,20 +21,20 @@
 
 - include_tasks: install_prometheus.yaml
   become: true
-  when: openshift_prometheus_state == 'present'
+  when: openshift_prometheus_state == 'present' and openshift_metrics_uninstall == false
 
 - name: restart prometheus pod
   become: true
   shell: "oc delete pod prometheus-0 -n {{ openshift_prometheus_namespace }}"
-  when: openshift_prometheus_state == 'present'
+  when: openshift_prometheus_state == 'present' and openshift_metrics_uninstall == false
 
 - include_tasks: uninstall_prometheus.yaml
   become: true
-  when: openshift_prometheus_state == 'absent'
+  when: openshift_prometheus_state == 'absent' or openshift_metrics_uninstall == true
 
 - include_tasks: install_node_exporter.yaml
   become: true
-  when: openshift_prometheus_node_exporter_install | default(true) | bool
+  when: openshift_prometheus_node_exporter_install | default(true) | bool  or openshift_metrics_uninstall == true
 
 - name: Delete temp directory
   become: true
