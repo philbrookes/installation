@@ -34,7 +34,7 @@
 
 - include_tasks: install_node_exporter.yaml
   become: true
-  when: openshift_prometheus_node_exporter_install | default(true) | bool  or openshift_metrics_uninstall == true
+  when: openshift_prometheus_node_exporter_install | default(true) | bool or openshift_metrics_uninstall == true
 
 - name: Delete temp directory
   become: true
