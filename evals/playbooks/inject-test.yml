@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - 
+      name: "Create test namespace"
+      shell: "oc new-project inject-test"
+      register: output
+      failed_when: output.stderr != '' and 'already exists' not in output.stderr
+      changed_when: output.rc == 0
+    -
+      name: "Create CR"
+      shell: "oc create -f https://raw.githubusercontent.com/integr8ly/keycloak-operator/master/deploy/examples/keycloakRealm.json"
+      register: output
+      failed_when: output.stderr != '' and 'already exists' not in output.stderr
+      changed_when: output.rc == 0
+    -
+      name: "get CR as JSON"
+      shell: oc get keycloakrealm arealm -n inject-test -o json
+      register: output
+    - 
+      debug: var=output
+    -
+      set_fact:
+        user_json: '{"email": "pbrookes@redhat.com"}'
+    -
+      name: "Patch CR"
+      shell: "oc patch keycloakrealm arealm -n inject-test --type=json -p '[{\"op\": \"add\", \"path\": \"/spec/users/-\", \"value\": {{user_json}}}]'"
+
+    -
+      name: "get CR as JSON"
+      shell: oc get keycloakrealm arealm -n inject-test -o json
+      register: output
+    - 
+      debug: var=output

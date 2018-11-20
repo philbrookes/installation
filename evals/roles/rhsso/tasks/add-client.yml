@@ -1,0 +1,10 @@
+---
+- 
+  name: "inject user into CR"
+  shell: "oc patch keycloakrealm {{realm_name}} -n {{namespace}} --type=json -p '[{\"op\": \"add\", \"path\": \"/spec/clients/-\", \"value\": {{client_json}}}]'"
+  register: result
+  until: not result.stderr
+  retries: 50
+  delay: 10
+  failed_when: result.stderr
+  changed_when: result.stdout
