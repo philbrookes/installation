@@ -200,6 +200,10 @@
       include_role:
         name: fuse
       tags: ['fuse']
+    -
+      name: Setup shared keycloak
+      include_role:
+        name: shared_keycloak
 
 - hosts: master
   gather_facts: no

@@ -1,0 +1,82 @@
+---
+
+-
+  name: "import RHSSO vars"
+  include_vars: ../../rhsso/defaults/main.yml
+
+-
+  name: "create {{ shared_keycloak_namespace}} namespace"
+  shell: "oc new-project {{ shared_keycloak_namespace }}"
+  register: output
+  failed_when: output.stderr != '' and 'already exists' not in output.stderr
+  changed_when: output.rc == 0
+
+- name: "Ensure 1.1 tag is present for redhat sso in openshift namespace"
+  shell: oc tag --source=docker registry.access.redhat.com/redhat-sso-7/sso72-openshift:1.1 openshift/redhat-sso72-openshift:1.1 -n openshift
+  register: result
+  until: result.stdout
+  retries: 50
+  delay: 1
+  failed_when: not result.stdout
+  changed_when: False
+
+- name: "Ensure 1.1 tag has an imported image in openshift namespace"
+  shell: oc -n openshift import-image redhat-sso72-openshift:1.1
+  register: result
+  until: result.stdout
+  retries: 50
+  delay: 1
+  failed_when: not result.stdout
+  changed_when: False
+
+- 
+  name: Generate RBAC template
+  template:
+    src: rbac.yaml.j2
+    dest: /tmp/rbac.yaml
+
+- 
+  name: create shared keycloak cluster operator rbac
+  shell: "oc create -f /tmp/rbac.yaml"
+  register: output
+  failed_when: output.stderr != '' and 'already exists' not in output.stderr
+  changed_when: output.rc == 0
+
+- 
+  name: update existing shared keycloak cluster operator rbac
+  shell: "oc replace -f /tmp/rbac.yaml"
+  when: "'already exists' in output.stderr"
+
+- 
+  name: "Create required objects"
+  shell: "oc create -f https://raw.githubusercontent.com/{{rhsso_operator_repo}}/keycloak-operator/{{rhsso_operator_commit_tag}}/deploy/{{ item }} -n {{ rhsso_namespace }}"
+  register: rhsso_required_objects_result
+  failed_when: rhsso_required_objects_result.stderr != '' and 'AlreadyExists' not in rhsso_required_objects_result.stderr
+  with_items: 
+    - Keycloak_crd.yaml
+    - KeycloakRealm_crd.yaml
+
+-
+  name: "generate deploy template"
+  template:
+    src: "deploy.yaml.j2"
+    dest: "/tmp/deploy.yaml"
+
+- 
+  name: "deploy operator"
+  shell: "oc create -f /tmp/deploy.yaml"
+  register: output
+  failed_when: output.stderr != '' and 'already exists' not in output.stderr
+  changed_when: output.rc == 0
+
+- 
+  name: "Create keycloak resource template"
+  template:
+    src: "keycloak.json.j2"
+    dest: "/tmp/keycloak.json"
+
+- 
+  name: "Create keycloak resource"
+  shell: oc create -f /tmp/keycloak.json -n {{ shared_keycloak_namespace }}
+  register: shared_keycloak
+  failed_when: shared_keycloak.stderr != '' and 'AlreadyExists' not in shared_keycloak.stderr
