@@ -4,11 +4,11 @@
   tasks:
     - name: master keycloak installer
       keycloak-installer:
-        option: value
+        action: install
 
 - hosts: local
   gather_facts: no
   tasks:
     - name: local keycloak installer
       keycloak-installer:
-        option: value2
+        action: uninstall
