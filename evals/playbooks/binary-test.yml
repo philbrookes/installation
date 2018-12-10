@@ -1,0 +1,14 @@
+---
+- hosts: master
+  gather_facts: no
+  tasks:
+    - name: master keycloak installer
+      keycloak-installer:
+        option: value
+
+- hosts: local
+  gather_facts: no
+  tasks:
+    - name: local keycloak installer
+      keycloak-installer:
+        option: value2
