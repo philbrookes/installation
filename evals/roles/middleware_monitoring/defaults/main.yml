@@ -28,3 +28,5 @@ monitoring_resource_templates:
 - "prometheus_operator_cluster_role.yml"
 - "alert_manager_cluster_role_binding.yml"
 - "alert_manager_cluster_role.yml"
+# Alert resources
+- "kube_state_metrics_alerts.yml"

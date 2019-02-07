@@ -5,9 +5,6 @@
   failed_when: output.stderr != '' and 'already exists' not in output.stderr
   changed_when: output.rc == 0
 
-- name: Add monitoring label to namespace
-  shell: oc patch ns {{ rhsso_namespace }} --patch '{"metadata":{"labels":{"{{ monitoring_label_name }}":"{{ monitoring_label_value }}"}}}'
-
 - name: "Ensure 1.2 tag is present for redhat sso in openshift namespace"
   shell: oc tag --source=docker registry.access.redhat.com/redhat-sso-7/sso72-openshift:1.2 openshift/redhat-sso72-openshift:1.2
   register: result
@@ -98,14 +95,6 @@
 - set_fact:
     launcher_sso_route: "{{ rhsso_secure_route.stdout }}"
   when: launcher
-
-- set_fact:	
-    threescale_route_suffix: "amp.{{ apps_redirect_uri }}"	
-  when: enable_threescale_wildcard_route	
-
-- set_fact:	
-    threescale_route_suffix: "{{ apps_redirect_uri }}"	
-  when: not enable_threescale_wildcard_route
 
 - name: "Create keycloak realm resource template"
   template:

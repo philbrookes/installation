@@ -1,0 +1,42 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  creationTimestamp: '2019-02-07T10:19:31Z'
+  generation: 1
+  labels:
+    monitoring-key: middleware
+  name: prometheus-application-monitoring-rules
+  namespace: middleware-monitoring
+  ownerReferences:
+    - apiVersion: applicationmonitoring.integreatly.org/v1alpha1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ApplicationMonitoring
+      name: example-applicationmonitoring
+      uid: d6500ae2-2ac1-11e9-9553-0a3b3ced5b5e
+  resourceVersion: '16899'
+  selfLink: >-
+    /apis/monitoring.coreos.com/v1/namespaces/middleware-monitoring/prometheusrules/prometheus-application-monitoring-rules
+  uid: dba04b58-2ac1-11e9-9553-0a3b3ced5b5e
+spec:
+  groups:
+    - name: general.rules
+      rules:
+      - alert: KubePodCrashLooping
+        annotations:
+          message: Pod {{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container
+            }}) is restarting {{ printf "%.2f" $value }} times / 5 minutes.
+        expr: |
+        rate(kube_pod_container_status_restarts_total{namespace=~"(openshift-.*|kube-.*|default|logging)",job="kube-state-metrics"}[15m]) * 60 * 5 > 0
+      	for: 1h
+      	labels:
+          severity: critical
+      - alert: KubePodNotReady
+        annotations:
+          message: Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready
+            state for longer than an hour.
+        expr: |
+          sum by (namespace, pod) (kube_pod_status_phase{namespace=~"(openshift-.*|kube-.*|default|logging)",job="kube-state-metrics", phase=~"Pending|Unknown"}) > 0
+        for: 1h
+        labels:
+          severity: critical
