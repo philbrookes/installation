@@ -1,0 +1,6 @@
+backups:
+  gpg_public_key: "some_value"
+  aws:
+    bucket_name: "intly"
+    access_key_id: "access key id"
+    access_key: "access key"

@@ -1,0 +1,11 @@
+---
+-
+  name: "generate backend template"
+  template:
+    src: "backend_secret.yml.j2"
+    dest: "/tmp/backend_secret.yml"
+-
+  name: "generate encryption secret template"
+  template:
+    src: "encryption_secret.yml.j2"
+    dest: "/tmp/encryption_secret.yml"

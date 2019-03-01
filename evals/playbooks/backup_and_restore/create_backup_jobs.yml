@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create backup secrets
+      include_role:
+        name: backups
+        tasks_from: install
+      tags: ['backups']
