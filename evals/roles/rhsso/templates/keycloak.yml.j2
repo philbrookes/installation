@@ -5,7 +5,7 @@ metadata:
 spec
   adminCredentials: ""
   plugins: ["{{ rhsso_plugins | join('","') }}"]
-  backups:{% if products|length < 1 %}[]{% endif %}
+  backups:{% if rhsso.backups|length < 1 %}[]{% endif %}
   {% for backup in rhsso.backups %}
     - name: "{{ backup.name }}"
       schedule": "{{ backup.schedule }}",
