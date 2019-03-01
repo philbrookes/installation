@@ -9,3 +9,9 @@
   template:
     src: "encryption_secret.yml.j2"
     dest: "/tmp/encryption_secret.yml"
+-
+  name: "create secret in {{ eval_backups.namespace }} namespace"
+  shell: "oc apply -f {{ item }}"
+  with_items:
+    - "/tmp/encryption_secret.yml"
+    - "/tmp/backend_secret.yml"
