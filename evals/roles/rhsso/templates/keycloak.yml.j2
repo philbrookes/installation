@@ -2,12 +2,12 @@ apiVersion: aerogear.org/v1alpha1
 kind: Keycloak
 metadata:
   name: rhsso
-spec
+spec:
   adminCredentials: ""
   plugins: ["{{ rhsso_plugins | join('","') }}"]
   backups:{% if rhsso.backups is not defined or rhsso.backups|length < 1 %}[]{% endif %}
-  {% for backup in rhsso.backups %}
 
+  {% for backup in rhsso.backups %}
     - name: "{{ backup.name }}"
       schedule": "{{ backup.schedule }}",
       encryption_key_secret_name: "{{ eval_backups.encryption_secret }}",
