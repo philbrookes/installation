@@ -11,7 +11,7 @@
     dest: "/tmp/encryption_secret.yml"
 -
   name: "create secret in {{ eval_backups.namespace }} namespace"
-  shell: "oc apply -f {{ item }}"
+  shell: "oc apply -f {{ item }} -n {{ eval_backups.namespace }}"
   with_items:
     - "/tmp/encryption_secret.yml"
     - "/tmp/backend_secret.yml"
