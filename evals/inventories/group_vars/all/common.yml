@@ -31,7 +31,7 @@ create_cluster_admin: true
 
 eval_backups:
   namespace: default
-  backend_secret: backup_backend
-  encryption_secret: backup_encryption
+  backend_secret: backup-backend
+  encryption_secret: backup-encryption
   image: quay.io/integreatly/backup-container
   image_tag: latest
