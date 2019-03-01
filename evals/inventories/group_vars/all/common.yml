@@ -28,3 +28,10 @@ eval_threescale_enable_wildcard_route: false
 
 # openshift login as some product installs wont work with system:admin
 create_cluster_admin: true
+
+eval_backups:
+  namespace: backups
+  credentials_secret: credentials
+  encryption_secret: encryption
+  image: quay.io/integreatly/backup-container
+  image_tag: latest

@@ -1,0 +1,16 @@
+apiVersion: aerogear.org/v1alpha1
+kind: Keycloak
+metadata:
+  name: rhsso
+spec
+  adminCredentials: ""
+  plugins: ["{{ rhsso_plugins | join('","') }}"]
+  backups:{% if products|length < 1 %}[]{% endif %}
+  {% for backup in rhsso.backups %}
+    - name: "{{ backup.name }}"
+      schedule": "{{ backup.schedule }}",
+      encryption_key_secret_name: "{{ eval_encryption_secret }}",
+      aws_credentials_secret_name: "{{ eval_credentials_secret }}",
+      image: "{{ backup.image }}",
+      image_tag: "{{ backup.image_tag }}"
+  {% endfor %}

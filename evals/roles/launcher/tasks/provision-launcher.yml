@@ -30,7 +30,7 @@
   when: openshift_client_secret_response.stdout != "null"
 
 - template:
-    src: idp-keycloak.json.j2
+    src: idp-keycloak.yml.j2
     dest: /tmp/idp-keycloak.json
 
 - name: Create Keycloak identity provider in Launcher SSO

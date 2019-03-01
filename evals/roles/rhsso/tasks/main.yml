@@ -37,11 +37,11 @@
 
 - name: "Create keycloak resource template"
   template:
-    src: "keycloak.json.j2"
-    dest: "/tmp/keycloak.json"
+    src: "keycloak.yml.j2"
+    dest: "/tmp/keycloak.yml"
 
 - name: "Create keycloak resource"
-  shell: oc create -f /tmp/keycloak.json -n {{ rhsso_namespace }}
+  shell: oc create -f /tmp/keycloak.yml -n {{ rhsso_namespace }}
   register: rhsso_keycloak
   failed_when: rhsso_keycloak.stderr != '' and 'AlreadyExists' not in rhsso_keycloak.stderr
 
