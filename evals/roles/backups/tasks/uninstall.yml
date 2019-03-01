@@ -1,0 +1,7 @@
+---
+-
+  name: "delete secret in {{ eval_backups.namespace }} namespace"
+  shell: "oc delete secret {{ item }} -n {{ eval_backups.namespace }}"
+  with_items:
+    - "{{ eval_backups.backend_secret }}"
+    - "{{ eval_backups.encryption_secret }}"

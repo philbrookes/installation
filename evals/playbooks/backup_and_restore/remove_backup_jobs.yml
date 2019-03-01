@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Remove backup secrets
+      include_role:
+        name: backups
+        tasks_from: uninstall
+      tags: ['backups']
