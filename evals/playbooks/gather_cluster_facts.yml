@@ -1,0 +1,22 @@
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - when: '"EVAL_VARS" not in hostvars and (master_url is not defined or app_host is not defined)'
+      block:
+        -
+          name: Retrieve master public domain
+          shell: "oc whoami --show-server"
+          register: get_master_url
+          failed_when: get_master_url.stderr != ""
+        -
+          add_host:
+            name: EVAL_VARS
+            eval_app_host: "{{ get_master_url.stdout | replace('https://master', 'apps') | replace(':443', '')}}"
+            openshift_master_url: "{{ get_master_url.stdout }}"
+    - when: '"EVAL_VARS" not in hostvars and (master_url is defined and app_host is defined)'
+      block:
+        -
+          add_host:
+            name: EVAL_VARS
+            eval_app_host: "{{ app_host }}"
+            openshift_master_url: "{{ master_url }}"

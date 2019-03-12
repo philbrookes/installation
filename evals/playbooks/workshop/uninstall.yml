@@ -1,0 +1,4 @@
+---
+- import_playbook: "../gather_cluster_facts.yml"
+- import_playbook: "../uninstall.yml"
+- import_playbook: "./master_uninstall_tasks.yml"

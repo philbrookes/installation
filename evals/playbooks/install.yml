@@ -1,21 +1,4 @@
 ---
-- hosts: master
-  gather_facts: no
-  tasks:
-    - block:
-      -
-        name: Retrieve master configurations
-        slurp:
-          src: "{{ eval_openshift_master_config_path }}"
-        register: eval_master_config
-        become: yes
-      -
-        add_host:
-          name: EVAL_VARS
-          eval_app_host: "{{ (eval_master_config['content'] | b64decode | from_yaml)['routingConfig']['subdomain'] }}"
-          openshift_master_url: "{{ (eval_master_config['content'] | b64decode | from_yaml)['masterPublicURL'] }}"
-      tags: ['bootstrap', 'remote']
-
 - import_playbook: "./prerequisites.yml"
 - import_playbook: "./openshift.yml"
 - import_playbook: "./user.yaml"
@@ -29,13 +12,6 @@
 - import_playbook: "./customise_web_console_install.yml"
 - import_playbook: "./apply_ocp_roles.yml"
 
-- hosts: master
-  gather_facts: no
-  tasks:
-    - name: remove integreatly-admin user
-      shell: "htpasswd -D /etc/origin/master/htpasswd integreatly-admin"
-      become: yes
-      when: create_cluster_admin
 - hosts: localhost
   gather_facts: no
   tasks:

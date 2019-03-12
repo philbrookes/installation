@@ -109,18 +109,3 @@
       name: Reboot template broker
       include_role:
         name: reboot_template_broker
-
-- hosts: master
-  tasks:
-    -
-      name: Remove webapp cors data	
-      include_role:	
-        name: webapp	
-        tasks_from: cors-remove	
-      tags: ['webapp']
-    -
-      name: Uninstall rhsso
-      include_role:
-        name: rhsso
-        tasks_from: remove_identityprovider
-      tags: ['rhsso']

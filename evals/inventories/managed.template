@@ -29,3 +29,6 @@ aws_s3_backup_secret_namespace=default
 
 # the secret containing the aws credentials
 aws_s3_backup_secret_name=s3-credentials
+
+master_url=<https://master-url:443>
+app_host=<apps.cluster-domain.com>

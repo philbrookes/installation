@@ -2,6 +2,8 @@
 - hosts: managed
   gather_facts: no
 
+- import_playbook: ../gather_cluster_facts.yml
+
 - import_playbook: ../install.yml
   when: core_install | default(true) | bool
 
