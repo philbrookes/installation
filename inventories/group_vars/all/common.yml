@@ -8,6 +8,8 @@ eval_sso_validate_certs: false
 eval_sso_url_suffix: /auth/admin/openshift/console
 eval_launcher_sso_realm: launcher_realm
 
+test_password: "{{ lookup('password', '/dev/null length=15 chars=ascii_letters,digits') }}"
+
 eval_apicurito_namespace: "{{ns_prefix | default('')}}apicurito"
 eval_che_namespace: "{{ns_prefix | default('')}}codeready"
 eval_launcher_namespace: "{{ns_prefix | default('')}}launcher"
